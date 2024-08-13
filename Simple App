@@ -1,0 +1,182 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Achievement App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomePage(),
+    );
+  }
+}
+
+// HomePage class with background image from URL and shield icons
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.black,
+              ),
+              child: Text(
+                'Profile',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Bio-Data'),
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About Me'),
+            ),
+          ],
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+              'https://image.lexica.art/full_webp/83ddaad2-0ef8-4759-85bc-ea8148da6c03', // Replace with your image URL
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                    'https://example.com/profile_pic.jpg', // Replace with your profile image URL
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              // Shield icons with glow effect on hover
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(3, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: MouseRegion(
+                      onEnter: (event) {
+                        // Add glow effect or change color on hover
+                      },
+                      onExit: (event) {
+                        // Remove glow effect or revert color on hover out
+                      },
+                      child: IconButton(
+                        iconSize: 50,
+                        icon: Icon(
+                          Icons.shield,
+                          color: Colors.blue, // Default color
+                        ),
+                        onPressed: () {
+                          // Action on click
+                        },
+                      ),
+                    ),
+                  );
+                }),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => StatsAbilitiesPage()),
+                  );
+                },
+                child: Text('Abilities'),
+              ),
+              
+              
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PercentileMarksPage()),
+                  );
+                },
+                child: Text('Percentile and Marks'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// StatsAbilitiesPage class
+class StatsAbilitiesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Stats and Abilities'),
+      ),
+      body: GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(4, (index) {
+          return Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.network('https://example.com/icon$index.png', height: 50), // Replace with your icon URLs
+                SizedBox(height: 10),
+                Text('Ability ${index + 1}'),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
+// PercentileMarksPage class
+class PercentileMarksPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Percentile and Marks'),
+      ),
+      body: ListView(
+        children: List.generate(5, (index) {
+          return ListTile(
+            leading: Icon(Icons.star, color: Colors.yellow),
+            title: Text('Subject ${index + 1}'),
+            subtitle: Text('Marks: 80, Percentage: 90%'),
+          );
+        }),
+      ),
+    );
+  }
+}
