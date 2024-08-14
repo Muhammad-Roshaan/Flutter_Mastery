@@ -1,0 +1,131 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ProfileScreen(),
+    );
+  }
+}
+
+class ProfileScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: Text('Profile', style: GoogleFonts.lato()),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          // User Info Section
+          Container(
+            padding: EdgeInsets.all(20),
+            color: Colors.white,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Colors.grey[300],
+                  child: Icon(Icons.person, size: 50, color: Colors.grey[500]),
+                ),
+                SizedBox(width: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('John Snow',
+                        style: GoogleFonts.lato(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Text('Beginner',
+                        style: GoogleFonts.lato(
+                          fontSize: 16,
+                          color: Colors.grey[600],
+                        )),
+                    SizedBox(height: 8),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text('PRO',
+                          style: GoogleFonts.lato(
+                            fontSize: 12,
+                            color: Colors.white,
+                          )),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          
+          // Badges, History, Stats
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('BADGES', style: GoogleFonts.lato(fontWeight: FontWeight.bold)),
+                Text('HISTORY', style: GoogleFonts.lato(fontWeight: FontWeight.bold)),
+                Text('STATS', style: GoogleFonts.lato(fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+          
+          // Badges Grid
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: GridView.count(
+                crossAxisCount: 3,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20,
+                children: [
+                  _buildBadge('Invite Friend', Colors.blue),
+                  _buildBadge('Yoga L1', Colors.green),
+                  _buildBadge('1st Workout', Colors.purple),
+                  _buildBadge('Run 5k', Colors.orange),
+                  _buildBadge('Run 8k', Colors.grey),
+                  _buildBadge('Yoga L2', Colors.grey[300]!),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBadge(String title, Color color) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Center(
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: GoogleFonts.lato(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+}
