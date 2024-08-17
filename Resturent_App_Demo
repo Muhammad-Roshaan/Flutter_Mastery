@@ -1,0 +1,138 @@
+
+class LoginScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Rest Burger',
+              style: TextStyle(
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 50),
+            ElevatedButton(
+              onPressed: () {
+                // Implement navigation to the main menu
+              },
+              child: Text('LOGIN'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Implement navigation to sign up screen
+              },
+              child: Text('SIGN UP'),
+            ),
+            SizedBox(height: 50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.menu_book, color: Colors.white),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.phone, color: Colors.white),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.percent, color: Colors.white),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.feedback, color: Colors.white),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class MenuScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> burgers = [
+    {
+      'name': 'Double Angus & Bacon Cheeseburger',
+      'price': 50.00,
+      'image': 'assets/double_angus.png', // Include local assets
+    },
+    {
+      'name': 'Spicy Angus Burger',
+      'price': 45.00,
+      'image': 'assets/spicy_angus.png',
+    },
+    // Add more burgers here
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Special Burgers'),
+      ),
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.8,
+        ),
+        itemCount: burgers.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: Column(
+              children: [
+                Image.asset(
+                  burgers[index]['image'],
+                  fit: BoxFit.cover,
+                  height: 100,
+                  width: double.infinity,
+                ),
+                Text(burgers[index]['name']),
+                Text('\$${burgers[index]['price']}'),
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement order logic
+                  },
+                  child: Text('Add to Cart'),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+Future<Database> initializeDB() async {
+  String path = await getDatabasesPath();
+  return openDatabase(
+    join(path, 'restaurant.db'),
+    onCreate: (database, version) async {
+      await database.execute(
+        "CREATE TABLE orders(id INTEGER PRIMARY KEY AUTOINCREMENT, itemName TEXT, price DOUBLE)",
+      );
+    },
+    version: 1,
+  );
+}
+
+Future<void> insertOrder(Order order) async {
+  final db = await initializeDB();
+  await db.insert(
+    'orders',
+    order.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
